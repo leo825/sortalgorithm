@@ -1,4 +1,4 @@
-package com.leo.demo.othertest;
+package com.leo.demo.threadtest;
 
 /**
  * ThreadLocal用法
