@@ -21,17 +21,18 @@ public class ThreadTest implements Runnable {
         thread2.start();
         System.out.println("main");
     }
+
+    private static class ThreadPOJO extends Thread {
+
+        private String threadName;
+
+        public ThreadPOJO(String name) {
+            this.threadName = name;
+        }
+
+        public void run() {
+            System.out.println(threadName + " from ThreadPOJO");
+        }
+    }
 }
 
-class ThreadPOJO extends Thread {
-
-    private String threadName;
-
-    public ThreadPOJO(String name) {
-        this.threadName = name;
-    }
-
-    public void run() {
-        System.out.println(threadName + " from ThreadPOJO");
-    }
-}

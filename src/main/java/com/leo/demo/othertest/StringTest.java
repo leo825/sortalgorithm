@@ -29,7 +29,6 @@ public class StringTest {
         return new StringBuffer(str).reverse().toString();
     }
 
-
     public static void main(String[] args) {
         String test = "abcdefga";
 
