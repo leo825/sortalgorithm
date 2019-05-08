@@ -8,5 +8,12 @@
     <artifactId>com.leo.sortalgorithm</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.jibug.cetty</groupId>
+            <artifactId>cetty-core</artifactId>
+            <version>0.1.8</version>
+        </dependency>
+    </dependencies>
 
 </project>

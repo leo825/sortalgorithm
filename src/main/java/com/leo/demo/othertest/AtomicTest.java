@@ -17,7 +17,7 @@ public class AtomicTest {
 
         ExecutorService service = Executors.newCachedThreadPool();
 
-        Count count = new Count();
+        final Count count = new Count();
         for(int i=0;i<1000;i++){
             service.execute(new Runnable() {
                 @Override
