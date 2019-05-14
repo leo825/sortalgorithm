@@ -1,5 +1,7 @@
 package com.leo.demo.othertest;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 /**
  * Created by Administrator on 2019/2/25.
  */
@@ -29,6 +31,41 @@ public class StringTest {
         return new StringBuffer(str).reverse().toString();
     }
 
+    /**
+     * 生成5位随机数
+     *
+     * @return
+     */
+    public static String generatePicKey() {
+        ThreadLocalRandom rand = ThreadLocalRandom.current();
+        final int A = 'A', Z = 'Z';
+
+        StringBuilder picKey = new StringBuilder();
+        while (picKey.length() < 5) {
+            int number = rand.nextInt(Z + 1);
+            if (number >= A) {
+                picKey.append((char) number);
+            }
+        }
+        return picKey.toString();
+    }
+
+    public static void desPlusTest(String encryString) {
+        long startTime = System.currentTimeMillis();
+        while (true) {
+            String tempKey = generatePicKey();
+            RealNameMsDesPlus realNameMsDesPlus = new RealNameMsDesPlus(tempKey);
+            String desString = realNameMsDesPlus.decrypt(encryString);
+            if (desString != null) {
+                System.out.println("KEY === " + tempKey);
+                System.out.println("解密后：" + desString);
+                break;
+            }
+        }
+        long endTime = System.currentTimeMillis();
+        System.out.println("耗时：" + (endTime - startTime) + "ms");
+    }
+
     public static void main(String[] args) {
         String test = "abcdefga";
 
@@ -39,5 +76,10 @@ public class StringTest {
         System.out.println("当前的test===" + test);
         System.out.println("去掉第一个字符为===" + removeCharAt(test, 1));
 
+        String testString = "ASDDDAsfasf";
+        String key = "TICAW";
+        RealNameMsDesPlus realNameMsDesPlus = new RealNameMsDesPlus(key);
+        String encryString = realNameMsDesPlus.encrypt(testString);
+        desPlusTest(encryString);
     }
 }

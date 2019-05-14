@@ -1,4 +1,4 @@
-package com.leo.demo.othertest;
+package com.leo.demo.atomictest;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
