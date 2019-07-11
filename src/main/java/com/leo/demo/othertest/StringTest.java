@@ -50,36 +50,14 @@ public class StringTest {
         return picKey.toString();
     }
 
-    public static void desPlusTest(String encryString) {
-        long startTime = System.currentTimeMillis();
-        while (true) {
-            String tempKey = generatePicKey();
-            RealNameMsDesPlus realNameMsDesPlus = new RealNameMsDesPlus(tempKey);
-            String desString = realNameMsDesPlus.decrypt(encryString);
-            if (desString != null) {
-                System.out.println("KEY === " + tempKey);
-                System.out.println("解密后：" + desString);
-                break;
-            }
-        }
-        long endTime = System.currentTimeMillis();
-        System.out.println("耗时：" + (endTime - startTime) + "ms");
-    }
 
     public static void main(String[] args) {
         String test = "abcdefga";
-
         System.out.println("原字符串===" + test);
         System.out.println("a最后一次出现的位置" + getStringLastTime(test, "a"));
         System.out.println("将字符串倒置===" + reverseString(test));
 
         System.out.println("当前的test===" + test);
         System.out.println("去掉第一个字符为===" + removeCharAt(test, 1));
-
-        String testString = "ASDDDAsfasf";
-        String key = "TICAW";
-        RealNameMsDesPlus realNameMsDesPlus = new RealNameMsDesPlus(key);
-        String encryString = realNameMsDesPlus.encrypt(testString);
-        desPlusTest(encryString);
     }
 }
