@@ -7,9 +7,18 @@ package com.leo.demo.interfacetest;
  */
 public class MainClass {
 
-    public static void main(String[] args) {
+
+    /**
+     * 测试接口实例化
+     */
+    public static void test1(){
         IFruit fruit = new Apple();
         String fruitName = fruit.getFruitName();
         System.out.println(fruitName);
+    }
+
+    public static void main(String[] args) {
+        test1();
+
     }
 }
