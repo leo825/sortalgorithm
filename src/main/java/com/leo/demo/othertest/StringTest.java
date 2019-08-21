@@ -51,6 +51,27 @@ public class StringTest {
     }
 
 
+    /**
+     * 判断字符串非空
+     * @return
+     */
+    public static boolean isBlack1(String str){
+        if(null == str || "".equals(str)){
+            return true;
+        }
+        return false;
+    }
+    /**
+     * 判断字符串非空
+     * @return
+     */
+    public static boolean isBlack2(String str){
+        if(null == str || str.length() == 0){
+            return true;
+        }
+        return false;
+    }
+
     public static void main(String[] args) {
         String test = "abcdefga";
         System.out.println("原字符串===" + test);
@@ -59,5 +80,21 @@ public class StringTest {
 
         System.out.println("当前的test===" + test);
         System.out.println("去掉第一个字符为===" + removeCharAt(test, 1));
+
+        int length = 1000000;
+        String testStr = "";
+        long startTime = System.currentTimeMillis();
+        for (int i = 0; i < length; i++){
+            isBlack1(testStr);
+        }
+        long endTime1 = System.currentTimeMillis();
+        System.out.println("isBlack1耗时：" + (endTime1 - startTime));
+
+        for (int i = 0; i < length; i++){
+            isBlack2(testStr);
+        }
+        long endTime2 = System.currentTimeMillis();
+        System.out.println("isBlack2耗时：" + (endTime2 - endTime1));
+
     }
 }

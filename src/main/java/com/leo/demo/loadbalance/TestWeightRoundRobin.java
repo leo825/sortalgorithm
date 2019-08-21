@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * 什么是平滑的轮询，就是把每个不同的服务，平均分布。在Nginx源码中，实现了一种叫做平滑的加权轮询（smooth weighted round-robin balancing）
  * 的算法，它生成的序列更加均匀。5个请求现在分散开来，不再是连续的。
  */
-public class TestWeightRobin {
+public class TestWeightRoundRobin {
     //1.map, key-ip,value-weight
     static Map<String,Integer> ipMap=new HashMap<>();
     static {
@@ -22,7 +22,7 @@ public class TestWeightRobin {
 
     }
     Integer pos=0;
-    public String WeightRobin(){
+    public String weightRoundRobin(){
         Map<String,Integer> ipServerMap=new ConcurrentHashMap<>();
         ipServerMap.putAll(ipMap);
 
@@ -53,9 +53,9 @@ public class TestWeightRobin {
     }
 
     public static void main(String[] args) {
-        TestWeightRobin testWeightRobin=new TestWeightRobin();
+        TestWeightRoundRobin testWeightRoundRobin=new TestWeightRoundRobin();
         for (int i =0;i<10;i++){
-            String server=testWeightRobin.WeightRobin();
+            String server=testWeightRoundRobin.weightRoundRobin();
             System.out.println(server);
         }
 

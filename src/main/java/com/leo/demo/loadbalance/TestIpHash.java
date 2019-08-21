@@ -40,8 +40,10 @@ public class TestIpHash {
 
     public static void main(String[] args) {
         TestIpHash testIpHash = new TestIpHash();
-        String servername = testIpHash.ipHash("192.168.21.2");
-        System.out.println(servername);
+        for(int i = 0; i < 10; i++){
+            System.out.println(testIpHash.ipHash("192.168.21.2"));
+            System.out.println(testIpHash.ipHash("192.168.21.3"));
+        }
     }
 
 }
