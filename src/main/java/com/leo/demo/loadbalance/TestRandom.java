@@ -19,8 +19,6 @@ public class TestRandom {
         ipMap.put("192.168.13.1",1);
         ipMap.put("192.168.13.2",2);
         ipMap.put("192.168.13.3",4);
-
-
     }
     public String Random() {
         Map<String,Integer> ipServerMap=new ConcurrentHashMap<>();
@@ -46,7 +44,5 @@ public class TestRandom {
             String server=testRandom.Random();
             System.out.println(server);
         }
-
-
     }
 }

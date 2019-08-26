@@ -36,14 +36,16 @@ public class RunnerTest {
 
         //比赛准备时间
         long beginTime = System.currentTimeMillis();
+        System.out.println("运动员就绪准备比赛");
 
+        //使用随机数产生随机运行时间
         ThreadLocalRandom threadLocalRandom = ThreadLocalRandom.current();
 
         final AtomicInteger firstRunner = new AtomicInteger(0);
         final AtomicInteger lastRunner = new AtomicInteger(0);
         //运动员进入各自的跑道
         for (int i = 0; i < runners; i++) {
-            int costTime = threadLocalRandom.nextInt(9, 16);
+            int costTime = threadLocalRandom.nextInt(9,13);
             Thread t = new Thread() {
                 @Override
                 public void run() {
@@ -51,6 +53,7 @@ public class RunnerTest {
                     try {
                         //等待主线程完成的信号
                         countDownLatch.await();
+
                         if (firstRunner.get() == 0 || lastRunner.get() == 0) {
                             firstRunner.set(costTime);
                             lastRunner.set(costTime);
@@ -73,12 +76,13 @@ public class RunnerTest {
             t.start();
         }
 
-        System.out.println("开始比赛...");
+
         //主线程准备时间
         long endTime = System.currentTimeMillis();
         System.out.println(Thread.currentThread().getName() + "准备时间：" + (endTime - beginTime) + "ms");
 
         //裁判发号施令开始比赛
+        System.out.println("开始比赛...");
         countDownLatch.countDown();
 
         //裁判事先到终点等待,当数字到达10+1的时候开始释放锁
