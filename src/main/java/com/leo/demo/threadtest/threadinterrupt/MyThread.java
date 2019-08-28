@@ -16,7 +16,7 @@ public class MyThread implements Runnable {
     public void run() {
         getThreadLog("线程开始执行了。。。");
         int needRunTime = getRunningTime();
-        getThreadLog("线程执行时间为：" + needRunTime);
+        getThreadLog("线程执行时间为：" + needRunTime + "秒");
         try {
             Thread.sleep(needRunTime * 1000);
         } catch (InterruptedException e) {

@@ -23,6 +23,17 @@ public class MyLoadBalanceTest {
      */
     private final static ConcurrentHashMap<String, Integer> ipMap = new ConcurrentHashMap();
 
+    private final static ThreadLocal<List<String>> threadLocallist = new ThreadLocal<List<String>>() {
+        /**
+         * ThreadLocal没有被当前线程赋值时或当前线程刚调用remove方法后调用get方法，返回此方法值
+         */
+        @Override
+        protected List<String> initialValue() {
+            System.out.println(Thread.currentThread().getName() + "调用get方法时，当前线程共享变量没有设置，调用initialValue获取默认值！");
+            return new ArrayList<String>();
+        }
+    };
+
     static {
         ipMap.put("192.168.1.1", 1);
         ipMap.put("192.168.1.2", 1);
@@ -34,8 +45,6 @@ public class MyLoadBalanceTest {
     //使用原子变量，以防并发修改
     private final static AtomicInteger tempCount = new AtomicInteger(0);
 
-    //使用线程安全的list以防止并发访问
-    private final static Vector<String> ipList = new Vector();
 
     //调用地址的超时时间设置
     private final static int COST_TIMEOUT = 10;
@@ -47,24 +56,24 @@ public class MyLoadBalanceTest {
      * @return
      */
     public static String getRoundRobinIp() {
-        //每次需要清空原有的list
-        ipList.removeAllElements();
+        //使用新创建的list，以防止并发清空list异常
+        List<String> list = threadLocallist.get();
         //重新把ip地址放进list中
         for (ConcurrentMap.Entry<String, Integer> entry : ipMap.entrySet()) {
             String availabelIpAddr = entry.getKey();
             int weigtVal = entry.getValue();
             for (int i = 0; i < weigtVal; i++) {
-                ipList.add(availabelIpAddr);
+                list.add(availabelIpAddr);
             }
         }
 
-        if (tempCount.get() >= ipList.size()) {
+        if (tempCount.get() >= list.size()) {
             tempCount.set(0);
         }
 
         String ipAddr = "";
-        if (!ipList.isEmpty()) {
-            ipAddr = ipList.get(tempCount.get());
+        if (!list.isEmpty()) {
+            ipAddr = list.get(tempCount.get());
             tempCount.incrementAndGet();
         }
         return ipAddr;
