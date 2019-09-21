@@ -83,6 +83,7 @@ public class DateTest {
 
     /**
      * 将date类型换成Calendar类型
+     *
      * @param date
      * @return
      */
@@ -92,8 +93,25 @@ public class DateTest {
         return calendar;
     }
 
-    /**************************************jdk8新特性***********************************************/
-    public static void clockTest(){
+    /**
+     * 测试月份是否合法
+     * 要求：输入月份必须是当前月份之前的5个月份为合法(含当月)
+     * 例如：当前是201902月份，合法月份为：201901、201812、201811、201810、201809
+     *
+     * @param nowMonth 当前月份
+     * @param inMonth  输入月份
+     */
+    public static boolean getCalendarMonth(int nowMonth, int inMonth) {
+        if (nowMonth - inMonth > 5 || ((nowMonth - inMonth < 0) && (nowMonth + 12 - inMonth > 5))) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * ***********************************jdk8新特性**********************************************
+     */
+    public static void clockTest() {
         Clock clock = Clock.systemUTC();
         System.out.println(clock.millis());
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -113,5 +131,6 @@ public class DateTest {
         System.out.println(getDateFromCalendar(2019, 3, 11));
         System.out.println(getCalendarFromDate(new Date()).getTime());
         clockTest();
+        System.out.println(getCalendarMonth(2, 2));
     }
 }
