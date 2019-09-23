@@ -2,25 +2,26 @@ package com.leo.demo.othertest;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 
 /**
  * @author Administrator
  * @Date 2019/3/21 14:30
  * @TODO 关于集合的测试类
- * <p/>
+ * <p>
  * 常用的集合类有哪些？比如List如何排序？
- * <p/>
+ * <p>
  * 分两种，一种实现Set接口，一种是实现List接口的。
- * <p/>
+ * <p>
  * Set：TreeSet,HashSet.
- * <p/>
+ * <p>
  * List:ArrayList,LinkedList,Vector(线程安全)。
- * <p/>
+ * <p>
  * JDK7以前用collections.sort(list,Comparator).
- * <p/>
+ * <p>
  * JDK8直接用List.sort(Comparator).
- * <p/>
- * <p/>
+ * <p>
+ * <p>
  * 线程安全的集合对象：
  * Vector
  * HashTable
@@ -74,7 +75,10 @@ public class CollectionsTest {
             System.out.println(list);
         }
 
-        public static void subListTest(){
+        /**
+         * 分割数组为子数组方式
+         */
+        public static void subListTest() {
             List list = new ArrayList<>();
             list.add("111");
             list.add("222");
@@ -84,8 +88,63 @@ public class CollectionsTest {
             list.add("666");
 
             System.out.println(list);
-            List sublist1 = list.subList(0,2);
+            List sublist1 = list.subList(0, 2);
             System.out.println(sublist1);
+        }
+
+        /**
+         * 测试数组封隔器原理
+         */
+        public static void listSpliteratorTest() {
+            List list = new ArrayList<String>();
+            for (int i = 0; i < 20; i++) {
+                list.add(String.valueOf(i));
+            }
+            Spliterator<String> spliterator1 = list.spliterator();
+            Spliterator<String> spliterator2 = spliterator1.trySplit();
+
+            int threadSize = 6;
+            for (int i = 0; i < threadSize; i++) {
+                Spliterator<String> tmepspliterator = null;
+                String SpliteratorName = "SpliteratorName" + i;
+                if (i == 0) {
+                    tmepspliterator = spliterator1;
+                } else {
+                    if (i == 1) {
+                        tmepspliterator = spliterator2;
+                    } else {
+                        if (i % 2 == 0) {
+                            tmepspliterator = spliterator1.trySplit();
+                        } else {
+                            tmepspliterator = spliterator2.trySplit();
+                        }
+                    }
+                }
+                final Spliterator<String> finalTmepspliterator = tmepspliterator;
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        finalTmepspliterator.forEachRemaining(new Consumer<String>() {
+                            @Override
+                            public void accept(String s) {
+                                System.out.println(SpliteratorName + ":" + s);
+                            }
+                        });
+                    }
+                }).start();
+            }
+        }
+
+        /**
+         * 打印分割器的内容
+         */
+        private static void printList(String SpliteratorName, Spliterator<String> spliterator) {
+            spliterator.forEachRemaining(new Consumer<String>() {
+                @Override
+                public void accept(String s) {
+                    System.out.println(SpliteratorName + ":" + s);
+                }
+            });
         }
     }
 
@@ -122,38 +181,38 @@ public class CollectionsTest {
     /**
      * Map集合
      */
-    private static class MapTest{
+    private static class MapTest {
 
         /**
          * HashMap测试
          */
-        public static void hashMapTest(){
+        public static void hashMapTest() {
             Map map = new HashMap<>();
-            map.put("1","a");
-            map.put("2","b");
-            map.put("3","c");
+            map.put("1", "a");
+            map.put("2", "b");
+            map.put("3", "c");
             System.out.println(map);
         }
 
         /**
          * HashTable测试
          */
-        public static void hashTableTest(){
+        public static void hashTableTest() {
             Map map = new Hashtable<>();
-            map.put("1","aa");
-            map.put("2","bb");
-            map.put("3","cc");
+            map.put("1", "aa");
+            map.put("2", "bb");
+            map.put("3", "cc");
             System.out.println(map);
         }
 
         /**
          * CurrentHashMap测试
          */
-        public static void currentHashMapTest(){
+        public static void currentHashMapTest() {
             Map map = new ConcurrentHashMap<>();
-            map.put("1","aaa");
-            map.put("2","bbb");
-            map.put("3","ccc");
+            map.put("1", "aaa");
+            map.put("2", "bbb");
+            map.put("3", "ccc");
             System.out.println(map);
         }
     }
@@ -163,6 +222,7 @@ public class CollectionsTest {
         ListTest.linkedListTest();
         ListTest.vectorTest();
         ListTest.subListTest();
+        ListTest.listSpliteratorTest();
         SetTest.hashSetTest();
         SetTest.treeSetTest();
         MapTest.hashMapTest();

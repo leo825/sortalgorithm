@@ -75,31 +75,48 @@ public class ListSpliteratorTest {
         //设置线程池大小
         ExecutorService executor = Executors.newFixedThreadPool(threadSize);
 
-        Spliterator spliterator = myList.spliterator();
+        /**
+         * spliterator分割器采用二分法分割，
+         * spliterator.trySplit()分割其中的一半
+         */
+        Spliterator spliterator1 = myList.spliterator();//分割为原来的一半
+        Spliterator spliterator2 = spliterator1.trySplit();//分割为原来的令一半
+
         for (int i = 0; i < threadSize; i++) {
             Spliterator newspliterator = null;
-            //如果是0就使用本身，如果非0就分割另外一部分
             if (i == 0) {
-                newspliterator = spliterator;
+                newspliterator = spliterator1;//模块1分割最后剩余的部分
             } else {
-                newspliterator = spliterator.trySplit();
+                if (i == 1) {
+                    newspliterator = spliterator2;//模块2分割最后剩余的部分
+                } else {
+                    if (i % 2 == 0) {//将剩余部分均匀分割
+                        newspliterator = spliterator1.trySplit();
+                    } else {
+                        newspliterator = spliterator2.trySplit();
+                    }
+                }
             }
+
             final Spliterator finalNewspliterator = newspliterator;
             executor.execute(() -> {
                 String threadName = Thread.currentThread().getName();
                 System.out.println("线程" + threadName + "开始运行了。。。");
-                finalNewspliterator.forEachRemaining(o -> {
-                    if (isInteger((String) o)) {
-                        try {
-                            doSomeBusiness();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
+                //分割到最后会为null，跳过继续执行
+                if (finalNewspliterator != null) {
+                    finalNewspliterator.forEachRemaining(o -> {
+                        if (isInteger((String) o)) {
+                            try {
+                                doSomeBusiness();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            int num = Integer.parseInt((String) o);
+                            atomicsum.getAndAdd(num);
+                            System.out.println("数值：" + atomicsum.get() + "------" + threadName);
                         }
-                        int num = Integer.parseInt((String) o);
-                        atomicsum.getAndAdd(num);
-                        System.out.println("数值：" + atomicsum.get() + "------" + threadName);
-                    }
-                });
+                    });
+                }
                 System.out.println("线程" + threadName + "运行结束---");
                 try {
                     cyclicBarrier.await();
