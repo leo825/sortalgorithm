@@ -56,7 +56,7 @@ public class ListSpliteratorTest {
     //计算总和，原子操作用于并发
     private static AtomicInteger atomicsum = new AtomicInteger(0);
     //初始化线程池大小
-    private static int threadSize = 4;
+    private static int threadSize = 10;
     //设置屏障值，子线程执行完再执行主线程
     private static CyclicBarrier cyclicBarrier = new CyclicBarrier(threadSize + 1);
 
@@ -109,54 +109,13 @@ public class ListSpliteratorTest {
                     e.printStackTrace();
                 }
             });
-
         }
-
         cyclicBarrier.await();
         executor.shutdown();
         System.out.println("结果为：" + atomicsum.get());
         long endTime = System.currentTimeMillis();
         System.out.println("使用list分割器耗时：" + (endTime - startTime) + "ms");
     }
-
-    /**
-     * 生成线程
-     *
-     * @param spliterator
-     */
-    public static void createThread(Spliterator spliterator) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                String threadName = Thread.currentThread().getName();
-                System.out.println("线程" + threadName + "开始运行了。。。");
-                spliterator.forEachRemaining(new Consumer() {
-                    @Override
-                    public void accept(Object o) {
-                        if (isInteger((String) o)) {
-                            try {
-                                doSomeBusiness();
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                            int num = Integer.parseInt((String) o);
-                            atomicsum.getAndAdd(num);
-                            System.out.println("数值：" + atomicsum.get() + "------" + threadName);
-                        }
-                    }
-                });
-                System.out.println("线程" + threadName + "运行结束---");
-                try {
-                    cyclicBarrier.await();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (BrokenBarrierException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
 
     /**
      * 测试不使用list分割器消耗时间

@@ -73,6 +73,20 @@ public class CollectionsTest {
             list.add("333");
             System.out.println(list);
         }
+
+        public static void subListTest(){
+            List list = new ArrayList<>();
+            list.add("111");
+            list.add("222");
+            list.add("333");
+            list.add("444");
+            list.add("555");
+            list.add("666");
+
+            System.out.println(list);
+            List sublist1 = list.subList(0,2);
+            System.out.println(sublist1);
+        }
     }
 
     /**
@@ -148,6 +162,7 @@ public class CollectionsTest {
         ListTest.arrayListTest();
         ListTest.linkedListTest();
         ListTest.vectorTest();
+        ListTest.subListTest();
         SetTest.hashSetTest();
         SetTest.treeSetTest();
         MapTest.hashMapTest();
