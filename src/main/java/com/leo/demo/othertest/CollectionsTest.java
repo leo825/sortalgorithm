@@ -54,6 +54,7 @@ public class CollectionsTest {
          * LinkedList：链表结构的集合
          */
         public static void linkedListTest() {
+            System.out.println("lindedList test start...");
             LinkedList list = new LinkedList<>();
             list.add("11");
             list.add("22");
@@ -62,6 +63,14 @@ public class CollectionsTest {
             System.out.println(list);
             System.out.println(list.getFirst());
             System.out.println(list.getLast());
+//            while (!list.isEmpty()) {
+//                //pollLast倒序输出，输出一个清除一个节点
+//                String s = (String) list.pollLast();
+//                System.out.println("输出：" + s);
+//            }
+            System.out.println("--------分割线---------");
+            System.out.println("lindedList test end...");
+
         }
 
         /**

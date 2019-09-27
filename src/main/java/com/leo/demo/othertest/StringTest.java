@@ -72,6 +72,16 @@ public class StringTest {
         return false;
     }
 
+    /**
+     * 拼接字符串
+     * @return
+     */
+    public static void concatStringTest(){
+        String s1 = "hello ";
+        System.out.println(s1.concat("world"));
+        System.out.println(s1);
+    }
+
     public static void main(String[] args) {
         String test = "abcdefga";
         System.out.println("原字符串===" + test);
@@ -81,7 +91,7 @@ public class StringTest {
         System.out.println("当前的test===" + test);
         System.out.println("去掉第一个字符为===" + removeCharAt(test, 1));
 
-        int length = 1000000;
+        int length = 1000;
         String testStr = "";
         long startTime = System.currentTimeMillis();
         for (int i = 0; i < length; i++){
@@ -95,6 +105,6 @@ public class StringTest {
         }
         long endTime2 = System.currentTimeMillis();
         System.out.println("isBlack2耗时：" + (endTime2 - endTime1));
-
+        concatStringTest();
     }
 }
