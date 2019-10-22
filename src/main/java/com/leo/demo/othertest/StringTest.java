@@ -106,5 +106,14 @@ public class StringTest {
         long endTime2 = System.currentTimeMillis();
         System.out.println("isBlack2耗时：" + (endTime2 - endTime1));
         concatStringTest();
+        byte b= 127;
+        byte b2 = (byte) (b+1);
+        System.out.println(b);
+        System.out.println(b+1);
+        System.out.println(b2);
+
+        String charge = "21.42";
+        String formateCharge = charge.split("\\.")[0]+"元，" + charge.split("\\.")[1].substring(0,1) + "角，" +charge.split("\\.")[1].substring(1,2) + "分";
+        System.out.println(formateCharge);
     }
 }
