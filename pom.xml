@@ -19,6 +19,13 @@
             <artifactId>junit</artifactId>
             <version>4.12</version>
         </dependency>
+
+        <!-- 引入netty的测试 -->
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>4.1.6.Final</version>
+        </dependency>
     </dependencies>
 
 </project>
